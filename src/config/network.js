@@ -1,6 +1,6 @@
 import axios from 'axios'
 const qs = require('qs')
-axios.defaults.baseURL = '../../'
+// axios.defaults.baseURL = '../../'
 axios.defaults.timeout = 1000 * 60
 // axios.defaults.transformRequest = [data => qs.stringify(data)]
 axios.interceptors.response.use(response => {

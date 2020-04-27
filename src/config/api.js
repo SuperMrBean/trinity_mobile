@@ -1,23 +1,16 @@
 import { xhrService } from './network'
 const api = {
-  user: {
-    getUserInfo: { // 获取用户信息
-      url: '/api/community/user/getMyUserInfo',
-      method: 'POST'
-    }
-  },
-  base: {
-    getWeChatInfo: { // 获取微信配置
-      url: '/api/community/weixin/getWXJsConfig',
-      method: 'POST'
-    }
-  },
-  activity: {
-    getActivityInfo: { // 获取活动信息
-      url: '/api/community/getActivityInfo',
-      method: 'POST'
+  basic: {
+    getTitle: { // 获取导航栏信息
+      url: '/api/v1/title',
+      method: 'get'
+    },
+    getStatic: { // 获取静态banner或者video
+      url: '/api/v1/static',
+      method: 'get'
     }
   }
+
 }
 const moduleList = Object.keys(api || {}).map(moduleName => {
   const actionList = Object.keys(api[moduleName] || {}).map(actionName => {
@@ -41,7 +34,7 @@ const moduleList = Object.keys(api || {}).map(moduleName => {
           try {
             const response = await xhrService(webServiceParams)
             // console.log('xhrService response', response)
-            if (response.data.status === 200) { // 接口返回成功状态
+            if (response.data.status === 200 || response.data.message === 'success') { // 接口返回成功状态
               resolve(response.data)
             } else {
               reject(response.data)

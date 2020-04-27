@@ -5,13 +5,18 @@ import router from './router'
 import store from './store'
 import { errorFormatter, LoadingInterface, handleInputFocus, handleInputBlur } from './config/utils'
 import filters from './filters'
-import { Loading, Collapse, CollapseItem, Toast } from 'vant'
+import { Loading, Collapse, CollapseItem, Toast, Field, Popup, Swipe, SwipeItem, Lazyload } from 'vant'
 
 Toast.allowMultiple()
 Vue.use(Toast)
 Vue.use(Loading)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
+Vue.use(Field)
+Vue.use(Popup)
+Vue.use(Swipe)
+Vue.use(SwipeItem)
+Vue.use(Lazyload)
 Vue.config.productionTip = false
 Vue.prototype.$loading = LoadingInterface
 Vue.prototype.$errorFormatter = errorFormatter
