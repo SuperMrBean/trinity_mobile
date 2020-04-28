@@ -14,6 +14,23 @@
       </van-swipe-item>
     </van-swipe>
     <div class="title">Trinity International Kindergarten</div>
+    <div class="principle">
+      <div class="principle-line1">我们的使命</div>
+      <div class="principle-line2">用圣心培育每一个孩子，让他们成为具有创造性，充满爱心和热情的学习者。</div>
+    </div>
+    <toggle>
+      <div class="video">
+        <div class="video-item" v-for="(item,index) in 7" :key="index" v-if="index < 4 || (index>=4 && isShowVideo)">
+          <img class="video-item__img" src="@/assets/images/video.jpg" alt="">
+          <div class="video-item__play"></div>
+          <br>
+          <span class="video-item__title">Our Chefs</span>
+        </div>
+      </div>
+    </toggle>
+    <div class="video-button" @click="handleShowVideo">
+      <span class="video-button__text" >更多</span>
+    </div>
     <van-popup v-model="isShowNav" position="top">
       <div class="nav" v-show="isShowNav">
         <van-collapse v-model="nav" :border="false" :accordion="true">
@@ -39,7 +56,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import apiActions from '@/config/api.js'
-
+import toggle from '@/components/Toggle.js'
 export default {
   name: 'home',
   data () {
@@ -50,6 +67,7 @@ export default {
       bannerList: [],
       videoList: [],
       isShowNav: false,
+      isShowVideo: false,
       baseUrl: 'http://www.boatng.cn:7002'
     }
   },
@@ -72,7 +90,6 @@ export default {
       try {
         let { data } = await apiActions.basic.getStatic({ params: { type: 'banner' } })
         this.bannerList = data
-        console.log(this.bannerList)
       } catch (error) {
         console.log(error)
       }
@@ -90,6 +107,9 @@ export default {
     },
     handleClick (data) {
       console.log(data)
+    },
+    handleShowVideo () {
+      this.isShowVideo = !this.isShowVideo
     }
   },
   mounted () {
@@ -98,6 +118,7 @@ export default {
     this.getVideo()
   },
   components: {
+    toggle
   }
 }
 </script>
@@ -200,5 +221,72 @@ export default {
   color:#fff;
   padding:10px 32px;
   padding-top:20px;
+}
+.principle{
+  text-align: center;
+}
+.principle-line1{
+  display: inline-block;
+  font-size:30px;
+  color:#fff;
+  padding-top:80px;
+  font-weight: 800;
+}
+.principle-line2{
+  display: inline-block;
+  color:#fff;
+  text-align: left;
+  padding:0 30px;
+  font-size:14px;
+  padding-top:10px;
+}
+.video{
+  display:flex;
+  flex-wrap: wrap;
+  padding:0 20px;
+}
+.video-item{
+  width:338px;
+  height:260px;
+  margin-top:40px;
+  font-size:0;
+  position:relative;
+}
+.video-item:nth-child(even){
+  margin-left:34px;
+}
+.video-item__img{
+  width:338px;
+  height:200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.video-item__play{
+  position: absolute;
+  left:52%;
+  transform: translateX(-50%);
+  top:60px;
+  width:80px;
+  height:80px;
+  background: url('~@/assets/images/play.png') 0 0 no-repeat;
+  background-size:100%;
+}
+.video-item__title{
+  display: inline-block;
+  padding-top:10px;
+  font-size:28px;
+  font-weight: 800;
+  color:#E8C474;
+}
+.video-button{
+  margin-top:40px;
+  text-align:center;
+}
+.video-button__text{
+  font-size:28px;
+  color:#15325F;
+  background:#fff;
+  padding:6px 40px;
+  border-radius:40px;
 }
 </style>
