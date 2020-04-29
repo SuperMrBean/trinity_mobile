@@ -20,16 +20,24 @@
     </div>
     <toggle>
       <div class="video">
-        <div class="video-item" v-for="(item,index) in 7" :key="index" v-if="index < 4 || (index>=4 && isShowVideo)">
-          <img class="video-item__img" src="@/assets/images/video.jpg" alt="">
-          <div class="video-item__play"></div>
+        <div class="video-item" v-for="(item,index) in videoList" :key="index" v-if="index < 4 || (index>=4 && isShowVideo)">
+          <img class="video-item__img" :src="`${baseUrl}${item.path}`" alt="">
+          <div class="video-item__play" @click="handlePlay(item)"></div>
           <br>
-          <span class="video-item__title">Our Chefs</span>
+          <span class="video-item__title">{{item.video_title}}</span>
         </div>
       </div>
     </toggle>
     <div class="video-button" @click="handleShowVideo">
-      <span class="video-button__text" >更多</span>
+      <span class="video-button__text" >{{isShowVideo ? '收起' : '更多'}}</span>
+    </div>
+    <div class="introduction">
+      <img class="introduction__img" src="@/assets/images/director.png" alt="">
+      <div class="introduction-main">
+        <div class="introductin-main__line1">Elaine Whelen</div>
+        <div class="introductin-main__line2">Director of Education</div>
+        <div class="introductin-main__line3">Ms. Whelen是圣心国际幼稚园的创校校长。她有30多年国际教育的经验，是华南最知名的国际教育者之一。在担任广州裕达隆国际学校校长（2007-2014）和爱莎国际学校创校校长(2014-2017)之前，她是伦敦国际学校校长(2001-2005)和乌干达Kabira国际学校校长(2005-2007)。</div>
+      </div>
     </div>
     <van-popup v-model="isShowNav" position="top">
       <div class="nav" v-show="isShowNav">
@@ -50,6 +58,12 @@
         </van-collapse>
       </div>
     </van-popup>
+    <transition name="fade">
+      <div class="mask" v-show="video.isShow">
+        <div class="close" @click="handleClose"></div>
+        <video class="player" controls="" :data-src="video.src" :src="video.src"></video>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -68,7 +82,11 @@ export default {
       videoList: [],
       isShowNav: false,
       isShowVideo: false,
-      baseUrl: 'http://www.boatng.cn:7002'
+      baseUrl: 'http://www.boatng.cn:7002',
+      video: {
+        isShow: false,
+        src: ''
+      }
     }
   },
   computed: {
@@ -110,6 +128,14 @@ export default {
     },
     handleShowVideo () {
       this.isShowVideo = !this.isShowVideo
+    },
+    handlePlay (data) {
+      this.video.isShow = true
+      this.video.src = `${this.baseUrl}${data.video_path}`
+    },
+    handleClose () {
+      this.video.isShow = false
+      this.video.src = ''
     }
   },
   mounted () {
@@ -123,6 +149,12 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 /deep/.van-cell{
   color:#fff;
   background-color:#15325F;
@@ -288,5 +320,61 @@ export default {
   background:#fff;
   padding:6px 40px;
   border-radius:40px;
+}
+.mask{
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.74);
+  position: fixed;
+  top:0;
+  left:0;
+  bottom: 0;
+  right:0;
+  z-index:9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.player{
+  width:800px;
+  max-height:500px;
+}
+.close{
+  position: absolute;
+  width:40px;
+  height:40px;
+  background:url('~@/assets/images/close.png') 0 0 no-repeat;
+  background-size:100%;
+  top:360px;
+  right:40px;
+  cursor: pointer;
+}
+.introduction{
+  margin-top:100px;
+  font-size:0;
+  text-align:center;
+}
+.introduction__img{
+  width:300px;
+  height:300px;
+}
+.introductin-main__line1{
+  margin-top:20px;
+  font-size:36px;
+  font-weight:800;
+  color:#fff;
+}
+.introductin-main__line2{
+  font-size:24px;
+  color:#fff;
+}
+.introductin-main__line3{
+  margin:0 auto;
+  margin-top:40px;
+  padding:0 40px;
+  font-size:24px;
+  color:#fff;
+  text-align: justify;
+  line-height:40px;
 }
 </style>
