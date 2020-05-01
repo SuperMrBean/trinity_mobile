@@ -39,14 +39,43 @@
         <div class="introductin-main__line3">Ms. Whelen是圣心国际幼稚园的创校校长。她有30多年国际教育的经验，是华南最知名的国际教育者之一。在担任广州裕达隆国际学校校长（2007-2014）和爱莎国际学校创校校长(2014-2017)之前，她是伦敦国际学校校长(2001-2005)和乌干达Kabira国际学校校长(2005-2007)。</div>
       </div>
     </div>
+    <div class="footer">
+      <div class="footer-map">
+        <img class="footer-map__img" src="@/assets/images/map.png" alt="">
+      </div>
+      <div class="footer-title">联系我们</div>
+      <div class="footer-bottom">
+        <div class="footer-bottom-left">
+          <div class="footer-bottom__line">
+            <div class="footer-bottom__line--address"></div>
+            <div class="footer-bottom__line--text">广州市天河区珠江新城花城大道663号</div>
+          </div>
+          <div class="footer-bottom__line">
+            <div class="footer-bottom__line--tel"></div>
+            <div class="footer-bottom__line--text">+86(20)8558 3287</div>
+          </div>
+          <div class="footer-bottom__line">
+            <div class="footer-bottom__line--web"></div>
+            <div class="footer-bottom__line--text">www.trinitygz.com</div>
+          </div>
+        </div>
+        <div class="footer-bottom-right">
+          <div class="footer-bottom-right__code"></div>
+          <span class="footer-bottom-right__tips">微信扫描二维码关注</span>
+        </div>
+      </div>
+      <div class="footer-backup">
+        粤ICP备05003387号 Powered by XOOPS!
+      </div>
+    </div>
     <van-popup v-model="isShowNav" position="top">
       <div class="nav" v-show="isShowNav">
         <van-collapse v-model="nav" :border="false" :accordion="true">
-          <div v-for="(item,index) in titleList" :key="index">
+          <div v-for="(item,index) in titleList" :key="index" v-if="!item.is_deleted">
             <div class="nav-item" v-if="item.children.length === 0" @click="handleClick(item)">{{item.name}}</div>
             <van-collapse-item v-else :title="item.name" :name="item.name">
               <van-collapse v-model="navChildren" :border="false" :accordion="true">
-                <div v-for="(itemChildren,indexChildren) in item.children" :key="indexChildren">
+                <div v-for="(itemChildren,indexChildren) in item.children" :key="indexChildren" v-if="!item.is_deleted">
                   <div class="nav-item" v-if="itemChildren.children.length === 0" @click="handleClick(itemChildren)">{{itemChildren.name}}</div>
                   <van-collapse-item v-else :title="itemChildren.name" :name="itemChildren.name">
                     <div class="nav-item" v-for="(intemGrandChilder,indexGrandChildren) in itemChildren.children" :key="indexGrandChildren" @click="handleClick(intemGrandChilder)">{{intemGrandChilder.name}}</div>
@@ -68,7 +97,6 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
 import apiActions from '@/config/api.js'
 import toggle from '@/components/Toggle.js'
 export default {
@@ -90,10 +118,6 @@ export default {
     }
   },
   computed: {
-    // vuex辅助函数
-    ...mapState({
-      // isApp: state => state.sdk.isApp // 与上面等价
-    })
   },
   methods: {
     async getTitle () {
@@ -124,7 +148,8 @@ export default {
       this.isShowNav = !this.isShowNav
     },
     handleClick (data) {
-      console.log(data)
+      this.$router.push({ name: 'detail', query: { id: data.id, title: data.name } })
+      this.isShowNav = false
     },
     handleShowVideo () {
       this.isShowVideo = !this.isShowVideo
@@ -269,13 +294,14 @@ export default {
   color:#fff;
   text-align: left;
   padding:0 30px;
-  font-size:14px;
+  font-size:28px;
   padding-top:10px;
 }
 .video{
   display:flex;
   flex-wrap: wrap;
   padding:0 20px;
+  margin-top:40px;
 }
 .video-item{
   width:338px;
@@ -311,7 +337,7 @@ export default {
   color:#E8C474;
 }
 .video-button{
-  margin-top:40px;
+  margin-top:30px;
   text-align:center;
 }
 .video-button__text{
@@ -376,5 +402,82 @@ export default {
   color:#fff;
   text-align: justify;
   line-height:40px;
+}
+.footer{
+  margin-top:100px
+}
+.footer-map{
+  padding:0 40px;
+}
+.footer-map__img{
+  width:100%;
+}
+.footer-title{
+  font-size:32px;
+  color:#fff;
+  margin-top:40px;
+  padding-left:40px;
+}
+.footer-bottom{
+  padding:40px 40px;
+  display:flex;
+}
+.footer-bottom-left{
+  margin-top:10px;
+}
+.footer-bottom__line{
+  display:flex;
+  align-items:center;
+  margin-bottom:30px;
+}
+.footer-bottom__line--address{
+  display:inline-block;
+  width:33px;
+  height:36px;
+  background:url('~@/assets/images/address.png') 0 0 no-repeat;
+  background-size:100%;
+}
+.footer-bottom__line--tel{
+  display:inline-block;
+  width:33px;
+  height:36px;
+  background:url('~@/assets/images/tel.png') 0 0 no-repeat;
+  background-size:100%;
+}
+.footer-bottom__line--web{
+  display:inline-block;
+  width:33px;
+  height:36px;
+  background:url('~@/assets/images/web.png') 0 0 no-repeat;
+  background-size:100%;
+}
+.footer-bottom__line--text{
+  display:inline-block;
+  color:#fff;
+  font-size:24px;
+  margin-left:10px;
+}
+.footer-bottom-right{
+  font-size:0;
+  text-align:center;
+}
+.footer-bottom-right__code{
+  width:140px;
+  height:140px;
+  background:url('~@/assets/images/qrcode.png') 0 0 no-repeat;
+  background-size:100%;
+  margin:0 auto;
+}
+.footer-bottom-right__tips{
+  display:inline-block;
+  font-size:20px;
+  color:#fff;
+  margin-top:20px;
+}
+.footer-backup{
+  font-size:20px;
+  color:#ccc;
+  text-align: center;
+  padding-bottom:100px;
 }
 </style>
