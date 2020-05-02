@@ -15,8 +15,8 @@
     </van-swipe>
     <div class="title">Trinity International Kindergarten</div>
     <div class="principle">
-      <div class="principle-line1">我们的使命</div>
-      <div class="principle-line2">用圣心培育每一个孩子，让他们成为具有创造性，充满爱心和热情的学习者。</div>
+      <div class="principle-line1">Our Mission</div>
+      <div class="principle-line2">To nurture the sacred heart in every child to become a creative, caring and passionate learner.</div>
     </div>
     <toggle>
       <div class="video">
@@ -24,31 +24,31 @@
           <img class="video-item__img" :src="`${baseUrl}${item.path}`" alt="">
           <div class="video-item__play" @click="handlePlay(item)"></div>
           <br>
-          <span class="video-item__title">{{item.video_title}}</span>
+          <span class="video-item__title">{{item.video_english_title}}</span>
         </div>
       </div>
     </toggle>
     <div class="video-button" @click="handleShowVideo">
-      <span class="video-button__text" >{{isShowVideo ? '收起' : '更多'}}</span>
+      <span class="video-button__text" >{{isShowVideo ? 'up' : 'more'}}</span>
     </div>
     <div class="introduction">
       <img class="introduction__img" src="@/assets/images/director.png" alt="">
       <div class="introduction-main">
         <div class="introductin-main__line1">Elaine Whelen</div>
         <div class="introductin-main__line2">Director of Education</div>
-        <div class="introductin-main__line3">Ms. Whelen是圣心国际幼稚园的创校校长。她有30多年国际教育的经验，是华南最知名的国际教育者之一。在担任广州裕达隆国际学校校长（2007-2014）和爱莎国际学校创校校长(2014-2017)之前，她是伦敦国际学校校长(2001-2005)和乌干达Kabira国际学校校长(2005-2007)。</div>
+        <div class="introductin-main__line3">Ms Whelen is the founding Director of Trinity International Kindergarten. With more than 30 years' experience in international education, Ms. Whelen is one of South China's best-known international educators. She was Head of the International School of London (2001-2005) and Kabira International School in Uganda (2005-2007) before becoming Head of Utahloy International School Guangzhou (2007-14) and Founding Head of ISA International School Guangzhou (2014-2017).</div>
       </div>
     </div>
     <div class="footer">
       <div class="footer-map">
         <img class="footer-map__img" src="@/assets/images/map.png" alt="">
       </div>
-      <div class="footer-title">联系我们</div>
+      <div class="footer-title">Contact us</div>
       <div class="footer-bottom">
         <div class="footer-bottom-left">
           <div class="footer-bottom__line">
             <div class="footer-bottom__line--address"></div>
-            <div class="footer-bottom__line--text">广州市天河区珠江新城花城大道663号</div>
+            <div class="footer-bottom__line--text">No. 663 Hua Cheng Da Dao,Zhu Jiang New Town, TIanhe District, Guangzhou</div>
           </div>
           <div class="footer-bottom__line">
             <div class="footer-bottom__line--tel"></div>
@@ -61,7 +61,7 @@
         </div>
         <div class="footer-bottom-right">
           <div class="footer-bottom-right__code"></div>
-          <span class="footer-bottom-right__tips">微信扫描二维码关注</span>
+          <span class="footer-bottom-right__tips">Scan our QR code and follow us on WeChat</span>
         </div>
       </div>
       <div class="footer-backup">
@@ -72,13 +72,13 @@
       <div class="nav" v-show="isShowNav">
         <van-collapse v-model="nav" :border="false" :accordion="true">
           <div v-for="(item,index) in titleList" :key="index" v-if="!item.is_deleted">
-            <div class="nav-item" v-if="item.children.length === 0" @click="handleClick(item)">{{item.name}}</div>
-            <van-collapse-item v-else :title="item.name" :name="item.name">
+            <div class="nav-item" v-if="item.children.length === 0" @click="handleClick(item)">{{item.english_name}}</div>
+            <van-collapse-item v-else :title="item.english_name" :name="item.english_name">
               <van-collapse v-model="navChildren" :border="false" :accordion="true">
                 <div v-for="(itemChildren,indexChildren) in item.children" :key="indexChildren" v-if="!item.is_deleted">
-                  <div class="nav-item" v-if="itemChildren.children.length === 0" @click="handleClick(itemChildren)">{{itemChildren.name}}</div>
-                  <van-collapse-item v-else :title="itemChildren.name" :name="itemChildren.name">
-                    <div class="nav-item" v-for="(intemGrandChilder,indexGrandChildren) in itemChildren.children" :key="indexGrandChildren" @click="handleClick(intemGrandChilder)">{{intemGrandChilder.name}}</div>
+                  <div class="nav-item" v-if="itemChildren.children.length === 0" @click="handleClick(itemChildren)">{{itemChildren.english_name}}</div>
+                  <van-collapse-item v-else :title="itemChildren.namenglish_namee" :name="itemChildren.english_name">
+                    <div class="nav-item" v-for="(intemGrandChilder,indexGrandChildren) in itemChildren.children" :key="indexGrandChildren" @click="handleClick(intemGrandChilder)">{{intemGrandChilder.english_name}}</div>
                   </van-collapse-item>
                 </div>
               </van-collapse>
@@ -155,10 +155,10 @@ export default {
       this.isShowNav = !this.isShowNav
     },
     handleClick (data) {
-      if (data.name === '首页') {
-        this.$router.push({ name: 'home' })
+      if (data.name === 'Home') {
+        this.$router.push({ name: 'home_en' })
       } else {
-        this.$router.push({ name: 'detail', query: { id: data.article_id, title: data.name } })
+        this.$router.push({ name: 'detail_en', query: { id: data.article_id, title: data.english_name } })
       }
       this.isShowNav = false
     },

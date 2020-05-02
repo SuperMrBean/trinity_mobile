@@ -13,9 +13,19 @@ export default new Router({
       component: Home
     },
     {
+      path: '/home_en',
+      name: 'home_en',
+      component: () => import(/* webpackChunkName: "home_en" */ './views/Home_en.vue')
+    },
+    {
       path: '/detail',
       name: 'detail',
-      component: () => import(/* webpackChunkName: "three" */ './views/Detail.vue')
+      component: () => import(/* webpackChunkName: "detail" */ './views/Detail.vue')
+    },
+    {
+      path: '/detail_en',
+      name: 'detail_en',
+      component: () => import(/* webpackChunkName: "detail_en" */ './views/Detail_en.vue')
     },
     {
       path: '/loading',

@@ -14,41 +14,22 @@
       </van-swipe-item>
     </van-swipe>
     <div class="title">Trinity International Kindergarten</div>
-    <div class="principle">
-      <div class="principle-line1">我们的使命</div>
-      <div class="principle-line2">用圣心培育每一个孩子，让他们成为具有创造性，充满爱心和热情的学习者。</div>
-    </div>
-    <toggle>
-      <div class="video">
-        <div class="video-item" v-for="(item,index) in videoList" :key="index" v-if="index < 4 || (index>=4 && isShowVideo)">
-          <img class="video-item__img" :src="`${baseUrl}${item.path}`" alt="">
-          <div class="video-item__play" @click="handlePlay(item)"></div>
-          <br>
-          <span class="video-item__title">{{item.video_title}}</span>
-        </div>
+    <div class="main">
+      <div class="main__title">
+        {{title}}
       </div>
-    </toggle>
-    <div class="video-button" @click="handleShowVideo">
-      <span class="video-button__text" >{{isShowVideo ? '收起' : '更多'}}</span>
-    </div>
-    <div class="introduction">
-      <img class="introduction__img" src="@/assets/images/director.png" alt="">
-      <div class="introduction-main">
-        <div class="introductin-main__line1">Elaine Whelen</div>
-        <div class="introductin-main__line2">Director of Education</div>
-        <div class="introductin-main__line3">Ms. Whelen是圣心国际幼稚园的创校校长。她有30多年国际教育的经验，是华南最知名的国际教育者之一。在担任广州裕达隆国际学校校长（2007-2014）和爱莎国际学校创校校长(2014-2017)之前，她是伦敦国际学校校长(2001-2005)和乌干达Kabira国际学校校长(2005-2007)。</div>
-      </div>
+      <div class="main__text" v-html="content"></div>
     </div>
     <div class="footer">
       <div class="footer-map">
         <img class="footer-map__img" src="@/assets/images/map.png" alt="">
       </div>
-      <div class="footer-title">联系我们</div>
+      <div class="footer-title">Contact us</div>
       <div class="footer-bottom">
         <div class="footer-bottom-left">
           <div class="footer-bottom__line">
             <div class="footer-bottom__line--address"></div>
-            <div class="footer-bottom__line--text">广州市天河区珠江新城花城大道663号</div>
+            <div class="footer-bottom__line--text">No. 663 Hua Cheng Da Dao,Zhu Jiang New Town, TIanhe District, Guangzhou</div>
           </div>
           <div class="footer-bottom__line">
             <div class="footer-bottom__line--tel"></div>
@@ -61,7 +42,7 @@
         </div>
         <div class="footer-bottom-right">
           <div class="footer-bottom-right__code"></div>
-          <span class="footer-bottom-right__tips">微信扫描二维码关注</span>
+          <span class="footer-bottom-right__tips">Scan our QR code and follow us on WeChat</span>
         </div>
       </div>
       <div class="footer-backup">
@@ -71,14 +52,14 @@
     <van-popup v-model="isShowNav" position="top">
       <div class="nav" v-show="isShowNav">
         <van-collapse v-model="nav" :border="false" :accordion="true">
-          <div v-for="(item,index) in titleList" :key="index" v-if="!item.is_deleted">
-            <div class="nav-item" v-if="item.children.length === 0" @click="handleClick(item)">{{item.name}}</div>
-            <van-collapse-item v-else :title="item.name" :name="item.name">
+          <div v-for="(item,index) in titleList" :key="index">
+            <div class="nav-item" v-if="item.children.length === 0" @click="handleClick(item)">{{item.english_name}}</div>
+            <van-collapse-item v-else :title="item.english_name" :name="item.english_name">
               <van-collapse v-model="navChildren" :border="false" :accordion="true">
-                <div v-for="(itemChildren,indexChildren) in item.children" :key="indexChildren" v-if="!item.is_deleted">
-                  <div class="nav-item" v-if="itemChildren.children.length === 0" @click="handleClick(itemChildren)">{{itemChildren.name}}</div>
-                  <van-collapse-item v-else :title="itemChildren.name" :name="itemChildren.name">
-                    <div class="nav-item" v-for="(intemGrandChilder,indexGrandChildren) in itemChildren.children" :key="indexGrandChildren" @click="handleClick(intemGrandChilder)">{{intemGrandChilder.name}}</div>
+                <div v-for="(itemChildren,indexChildren) in item.children" :key="indexChildren">
+                  <div class="nav-item" v-if="itemChildren.children.length === 0" @click="handleClick(itemChildren)">{{itemChildren.english_name}}</div>
+                  <van-collapse-item v-else :title="itemChildren.english_name" :name="itemChildren.english_name">
+                    <div class="nav-item" v-for="(intemGrandChilder,indexGrandChildren) in itemChildren.children" :key="indexGrandChildren" @click="handleClick(intemGrandChilder)">{{intemGrandChilder.english_name}}</div>
                   </van-collapse-item>
                 </div>
               </van-collapse>
@@ -87,29 +68,24 @@
         </van-collapse>
       </div>
     </van-popup>
-    <transition name="fade">
-      <div class="mask" v-show="video.isShow">
-        <div class="close" @click="handleClose"></div>
-        <video class="player" controls="" :data-src="video.src" :src="video.src"></video>
-      </div>
-    </transition>
   </div>
 </template>
 
 <script>
 import apiActions from '@/config/api.js'
-import toggle from '@/components/Toggle.js'
+import axios from 'axios'
 export default {
-  name: 'home',
+  name: 'detail',
   data () {
     return {
+      id: null,
+      title: null,
+      content: null,
       nav: [],
       navChildren: [],
       titleList: [],
       bannerList: [],
-      videoList: [],
       isShowNav: false,
-      isShowVideo: false,
       baseUrl: 'http://www.boatng.cn:7002',
       video: {
         isShow: false,
@@ -118,6 +94,15 @@ export default {
     }
   },
   computed: {
+
+  },
+  watch: {
+    $route () {
+      this.id = this.$route.query.id
+      this.title = this.$route.query.title
+      this.getArticle()
+      this.getBanner()
+    }
   },
   methods: {
     async getTitle () {
@@ -136,10 +121,10 @@ export default {
         console.log(error)
       }
     },
-    async getVideo () {
+    async getArticle () {
       try {
-        let { data } = await apiActions.basic.getStatic({ params: { type: 'video' } })
-        this.videoList = data
+        let data = await axios.get(`/api/v1/article/${this.id}`)
+        this.content = data.data.data.english_content
       } catch (error) {
         console.log(error)
       }
@@ -155,32 +140,22 @@ export default {
       this.isShowNav = !this.isShowNav
     },
     handleClick (data) {
-      if (data.name === '首页') {
-        this.$router.push({ name: 'home' })
+      if (data.english_name === 'Home') {
+        this.$router.push({ name: 'home_en' })
       } else {
-        this.$router.push({ name: 'detail', query: { id: data.article_id, title: data.name } })
+        this.$router.push({ name: 'detail_en', query: { id: data.article_id, title: data.english_name } })
       }
       this.isShowNav = false
-    },
-    handleShowVideo () {
-      this.isShowVideo = !this.isShowVideo
-    },
-    handlePlay (data) {
-      this.video.isShow = true
-      this.video.src = `${this.baseUrl}${data.video_path}`
-    },
-    handleClose () {
-      this.video.isShow = false
-      this.video.src = ''
     }
   },
   mounted () {
+    this.id = this.$route.query.id
+    this.title = this.$route.query.title
     this.getTitle()
+    this.getArticle()
     this.getBanner()
-    this.getVideo()
   },
   components: {
-    toggle
   }
 }
 </script>
@@ -290,74 +265,6 @@ export default {
   padding:10px 32px;
   padding-top:20px;
 }
-.principle{
-  text-align: center;
-}
-.principle-line1{
-  display: inline-block;
-  font-size:30px;
-  color:#fff;
-  padding-top:80px;
-  font-weight: 800;
-}
-.principle-line2{
-  display: inline-block;
-  color:#fff;
-  text-align: left;
-  padding:0 30px;
-  font-size:28px;
-  padding-top:10px;
-}
-.video{
-  display:flex;
-  flex-wrap: wrap;
-  padding:0 20px;
-  margin-top:40px;
-}
-.video-item{
-  width:338px;
-  height:260px;
-  margin-top:40px;
-  font-size:0;
-  position:relative;
-}
-.video-item:nth-child(even){
-  margin-left:34px;
-}
-.video-item__img{
-  width:338px;
-  height:200px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-.video-item__play{
-  position: absolute;
-  left:52%;
-  transform: translateX(-50%);
-  top:60px;
-  width:80px;
-  height:80px;
-  background: url('~@/assets/images/play.png') 0 0 no-repeat;
-  background-size:100%;
-}
-.video-item__title{
-  display: inline-block;
-  padding-top:10px;
-  font-size:28px;
-  font-weight: 800;
-  color:#E8C474;
-}
-.video-button{
-  margin-top:30px;
-  text-align:center;
-}
-.video-button__text{
-  font-size:28px;
-  color:#15325F;
-  background:#fff;
-  padding:6px 40px;
-  border-radius:40px;
-}
 .mask{
   width:100%;
   height:100%;
@@ -372,47 +279,36 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.player{
-  width:800px;
-  max-height:500px;
+.main{
+  width:100%;
+  background:#fff;
+  padding:40px;
+  margin-top:-22px;
 }
-.close{
-  position: absolute;
-  width:40px;
-  height:40px;
-  background:url('~@/assets/images/close.png') 0 0 no-repeat;
-  background-size:100%;
-  top:360px;
-  right:40px;
-  cursor: pointer;
+.main__title{
+  color:#15325F;
+  font-size:44px;
+  text-align: center;
+  font-weight: 800;
 }
-.introduction{
-  margin-top:100px;
-  font-size:0;
-  text-align:center;
-}
-.introduction__img{
-  width:300px;
-  height:300px;
-}
-.introductin-main__line1{
-  margin-top:20px;
-  font-size:36px;
-  font-weight:800;
-  color:#fff;
-}
-.introductin-main__line2{
-  font-size:24px;
-  color:#fff;
-}
-.introductin-main__line3{
-  margin:0 auto;
-  margin-top:40px;
-  padding:0 40px;
-  font-size:24px;
-  color:#fff;
-  text-align: justify;
-  line-height:40px;
+.main__text{
+  text-align: left;
+  /deep/img{
+    width:100%;
+  }
+  /deep/p{
+    font-size:1rem;
+    line-height: 1.5;
+  }
+  /deep/.ql-size-small{
+    font-size:0.75rem;
+  }
+  /deep/.ql-size-large{
+    font-size:1.5rem;
+  }
+  /deep/.ql-size-huge{
+    font-size:2.5rem;
+  }
 }
 .footer{
   margin-top:100px

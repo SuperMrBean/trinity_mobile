@@ -3,8 +3,8 @@
     <div class="header">
       <div class="header-left"></div>
       <div class="header-right">
-        <div class="header-right__lang">ch</div>
-        <div class="header-right__lang">en</div>
+        <div class="header-right__lang" @click="handleChangeLanguage('ch')">ch</div>
+        <div class="header-right__lang" @click="handleChangeLanguage('en')">en</div>
         <div :class="{'header-right__nav':!isShowNav,'header-right__nav--close':isShowNav}" @click="handleShowNav"></div>
       </div>
     </div>
@@ -129,11 +129,22 @@ export default {
         console.log(error)
       }
     },
+    handleChangeLanguage (type) {
+      if (type === 'ch') {
+        this.$router.push({ name: 'home' })
+      } else if (type === 'en') {
+        this.$router.push({ name: 'home_en' })
+      }
+    },
     handleShowNav () {
       this.isShowNav = !this.isShowNav
     },
     handleClick (data) {
-      this.$router.push({ name: 'detail', query: { id: data.id, title: data.name } })
+      if (data.name === '首页') {
+        this.$router.push({ name: 'home' })
+      } else {
+        this.$router.push({ name: 'detail', query: { id: data.article_id, title: data.name } })
+      }
       this.isShowNav = false
     }
   },
