@@ -8,9 +8,9 @@
         <div :class="{'header-right__nav':!isShowNav,'header-right__nav--close':isShowNav}" @click="handleShowNav"></div>
       </div>
     </div>
-    <van-swipe class="swipe" :autoplay="3000" :show-indicators="false">
+    <van-swipe class="swipe" :show-indicators="false">
       <van-swipe-item v-for="(image, index) in bannerList" :key="index">
-        <img class="swipe-img" v-lazy="`${baseUrl}${image.path}`" />
+        <img class="swipe-img" v-lazy="`${baseUrl}${poster}`" />
       </van-swipe-item>
     </van-swipe>
     <div class="title">Trinity International Kindergarten</div>
@@ -90,7 +90,8 @@ export default {
       video: {
         isShow: false,
         src: ''
-      }
+      },
+      poster: ''
     }
   },
   computed: {
@@ -125,6 +126,7 @@ export default {
       try {
         let data = await axios.get(`/api/v1/article/${this.id}`)
         this.content = data.data.data.content
+        this.poster = data.data.data.cover_path
       } catch (error) {
         console.log(error)
       }
