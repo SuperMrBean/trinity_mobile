@@ -86,7 +86,7 @@ export default {
       titleList: [],
       bannerList: [],
       isShowNav: false,
-      baseUrl: 'http://www.boatng.cn:7002',
+      baseUrl: 'http://api.trinitygz.com',
       video: {
         isShow: false,
         src: ''

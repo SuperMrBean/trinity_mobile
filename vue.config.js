@@ -12,7 +12,7 @@ module.exports = {
     disableHostCheck: true, // 开了才能用改host方式访问
     proxy: {
       '/api': {
-        target: 'http://www.boatng.cn:7002',
+        target: 'http://api.trinitygz.com',
         changeOrigin: true
       }
       // '/store/api': {
