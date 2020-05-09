@@ -86,7 +86,7 @@ export default {
       titleList: [],
       bannerList: [],
       isShowNav: false,
-      baseUrl: 'http://api.trinitygz.com',
+      baseUrl: process.env.VUE_APP_BUILD_URL,
       video: {
         isShow: false,
         src: ''
@@ -124,7 +124,7 @@ export default {
     },
     async getArticle () {
       try {
-        let data = await axios.get(`/api/v1/article/${this.id}`)
+        let data = await axios.get(`${this.baseUrl}/api/v1/article/${this.id}`)
         this.content = data.data.data.content
         this.poster = data.data.data.cover_path
       } catch (error) {

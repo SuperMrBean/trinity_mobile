@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "start": "vue-cli-service serve",
-    "build": "vue-cli-service build --modern",
-    "build-test": "vue-cli-service build --mode test --modern",
+    "prod": "vue-cli-service build --modern",
+    "staging": "vue-cli-service build --mode test --modern",
     "lint": "vue-cli-service lint",
-    "prod": "node browser-sync.config.js",
     "build-skeleton": "webpack --config skeleton/webpack.skeleton.conf.js",
     "skeleton": "node skeleton"
   },

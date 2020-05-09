@@ -110,7 +110,7 @@ export default {
       videoList: [],
       isShowNav: false,
       isShowVideo: false,
-      baseUrl: 'http://api.trinitygz.com',
+      baseUrl: process.env.VUE_APP_BUILD_URL,
       video: {
         isShow: false,
         src: ''

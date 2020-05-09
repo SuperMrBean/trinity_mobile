@@ -71,13 +71,13 @@
     <van-popup v-model="isShowNav" position="top">
       <div class="nav" v-show="isShowNav">
         <van-collapse v-model="nav" :border="false" :accordion="true">
-          <div v-for="(item,index) in titleList" :key="index" v-if="!item.is_deleted">
+          <div v-for="(item,index) in titleList" :key="index">
             <div class="nav-item" v-if="item.children.length === 0" @click="handleClick(item)">{{item.english_name}}</div>
             <van-collapse-item v-else :title="item.english_name" :name="item.english_name">
               <van-collapse v-model="navChildren" :border="false" :accordion="true">
-                <div v-for="(itemChildren,indexChildren) in item.children" :key="indexChildren" v-if="!item.is_deleted">
+                <div v-for="(itemChildren,indexChildren) in item.children" :key="indexChildren">
                   <div class="nav-item" v-if="itemChildren.children.length === 0" @click="handleClick(itemChildren)">{{itemChildren.english_name}}</div>
-                  <van-collapse-item v-else :title="itemChildren.namenglish_namee" :name="itemChildren.english_name">
+                  <van-collapse-item v-else :title="itemChildren.english_name" :name="itemChildren.english_name">
                     <div class="nav-item" v-for="(intemGrandChilder,indexGrandChildren) in itemChildren.children" :key="indexGrandChildren" @click="handleClick(intemGrandChilder)">{{intemGrandChilder.english_name}}</div>
                   </van-collapse-item>
                 </div>
@@ -110,7 +110,7 @@ export default {
       videoList: [],
       isShowNav: false,
       isShowVideo: false,
-      baseUrl: 'http://api.trinitygz.com',
+      baseUrl: process.env.VUE_APP_BUILD_URL,
       video: {
         isShow: false,
         src: ''
