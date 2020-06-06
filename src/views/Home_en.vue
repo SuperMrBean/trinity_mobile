@@ -34,31 +34,13 @@
     <div class="introduction">
       <img class="introduction__img" src="@/assets/images/director.png" alt="">
       <div class="introduction-main">
-        <div class="introductin-main__line1">Elaine Whelen</div>
+        <div class="introductin-main__line1">Alison Cook</div>
         <div class="introductin-main__line2">Director of Education</div>
-        <div class="introductin-main__line3">Ms Whelen is the founding Director of Trinity International Kindergarten. With more than 30 years' experience in international education, Ms. Whelen is one of South China's best-known international educators. She was Head of the International School of London (2001-2005) and Kabira International School in Uganda (2005-2007) before becoming Head of Utahloy International School Guangzhou (2007-14) and Founding Head of ISA International School Guangzhou (2014-2017).</div>
+        <div class="introductin-main__line3">The Director of Education for the Trinity Group, Alison Cook is an early years and primary expert, as well as a Council of British International Schools (COBIS) Accreditor and IEYC (Fieldwork) Curriculum Trainer. Over her twenty-five years of experience in education she has worked in the UK, Turkey, Azerbaijan and Malaysia in a variety of educational roles including Principal, Educational Consultant, Inspector and Teacher Trainer.</div>
       </div>
     </div>
     <div class="footer">
-      <div class="footer-map">
-        <img class="footer-map__img" src="@/assets/images/map.png" alt="">
-      </div>
-      <div class="footer-title">Contact us</div>
       <div class="footer-bottom">
-        <div class="footer-bottom-left">
-          <div class="footer-bottom__line">
-            <div class="footer-bottom__line--address"></div>
-            <div class="footer-bottom__line--text">No. 663 Hua Cheng Da Dao,Zhu Jiang New Town, TIanhe District, Guangzhou</div>
-          </div>
-          <div class="footer-bottom__line">
-            <div class="footer-bottom__line--tel"></div>
-            <div class="footer-bottom__line--text">+86(20)8558 3287</div>
-          </div>
-          <div class="footer-bottom__line">
-            <div class="footer-bottom__line--web"></div>
-            <div class="footer-bottom__line--text">www.trinitygz.com</div>
-          </div>
-        </div>
         <div class="footer-bottom-right">
           <div class="footer-bottom-right__code"></div>
           <span class="footer-bottom-right__tips">Scan our QR code and follow us on WeChat</span>
@@ -75,10 +57,10 @@
             <div class="nav-item" v-if="item.children.length === 0" @click="handleClick(item)">{{item.english_name}}</div>
             <van-collapse-item v-else :title="item.english_name" :name="item.english_name">
               <van-collapse v-model="navChildren" :border="false" :accordion="true">
-                <div v-for="(itemChildren,indexChildren) in item.children" :key="indexChildren">
+                <div v-for="(itemChildren,indexChildren) in item.children.filter(item=>!item.is_deleted)" :key="indexChildren">
                   <div class="nav-item" v-if="itemChildren.children.length === 0" @click="handleClick(itemChildren)">{{itemChildren.english_name}}</div>
                   <van-collapse-item v-else :title="itemChildren.english_name" :name="itemChildren.english_name">
-                    <div class="nav-item" v-for="(intemGrandChilder,indexGrandChildren) in itemChildren.children" :key="indexGrandChildren" @click="handleClick(intemGrandChilder)">{{intemGrandChilder.english_name}}</div>
+                    <div class="nav-item" v-for="(intemGrandChilder,indexGrandChildren) in itemChildren.children.filter(item=>!item.is_deleted)" :key="indexGrandChildren" @click="handleClick(intemGrandChilder)">{{intemGrandChilder.english_name}}</div>
                   </van-collapse-item>
                 </div>
               </van-collapse>
@@ -123,7 +105,7 @@ export default {
     async getTitle () {
       try {
         let { data } = await apiActions.basic.getTitle({ params: { is_format: 1 } })
-        this.titleList = data
+        this.titleList = data.filter(item => !item.is_deleted)
       } catch (error) {
         console.log(error)
       }
@@ -432,6 +414,7 @@ export default {
 .footer-bottom{
   padding:40px 40px;
   display:flex;
+  justify-content: center;
 }
 .footer-bottom-left{
   margin-top:10px;

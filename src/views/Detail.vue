@@ -21,25 +21,7 @@
       <div class="main__text" v-html="content"></div>
     </div>
     <div class="footer">
-      <div class="footer-map">
-        <img class="footer-map__img" src="@/assets/images/map.png" alt="">
-      </div>
-      <div class="footer-title">联系我们</div>
       <div class="footer-bottom">
-        <div class="footer-bottom-left">
-          <div class="footer-bottom__line">
-            <div class="footer-bottom__line--address"></div>
-            <div class="footer-bottom__line--text">广州市天河区珠江新城花城大道663号</div>
-          </div>
-          <div class="footer-bottom__line">
-            <div class="footer-bottom__line--tel"></div>
-            <div class="footer-bottom__line--text">+86(20)8558 3287</div>
-          </div>
-          <div class="footer-bottom__line">
-            <div class="footer-bottom__line--web"></div>
-            <div class="footer-bottom__line--text">www.trinitygz.com</div>
-          </div>
-        </div>
         <div class="footer-bottom-right">
           <div class="footer-bottom-right__code"></div>
           <span class="footer-bottom-right__tips">微信扫描二维码关注</span>
@@ -56,10 +38,10 @@
             <div class="nav-item" v-if="item.children.length === 0" @click="handleClick(item)">{{item.name}}</div>
             <van-collapse-item v-else :title="item.name" :name="item.name">
               <van-collapse v-model="navChildren" :border="false" :accordion="true">
-                <div v-for="(itemChildren,indexChildren) in item.children" :key="indexChildren">
+                <div v-for="(itemChildren,indexChildren) in item.children.filter(item=>!item.is_deleted)" :key="indexChildren">
                   <div class="nav-item" v-if="itemChildren.children.length === 0" @click="handleClick(itemChildren)">{{itemChildren.name}}</div>
                   <van-collapse-item v-else :title="itemChildren.name" :name="itemChildren.name">
-                    <div class="nav-item" v-for="(intemGrandChilder,indexGrandChildren) in itemChildren.children" :key="indexGrandChildren" @click="handleClick(intemGrandChilder)">{{intemGrandChilder.name}}</div>
+                    <div class="nav-item" v-for="(intemGrandChilder,indexGrandChildren) in itemChildren.children.filter(item=>!item.is_deleted)" :key="indexGrandChildren" @click="handleClick(intemGrandChilder)">{{intemGrandChilder.name}}</div>
                   </van-collapse-item>
                 </div>
               </van-collapse>
@@ -109,7 +91,7 @@ export default {
     async getTitle () {
       try {
         let { data } = await apiActions.basic.getTitle({ params: { is_format: 1 } })
-        this.titleList = data
+        this.titleList = data.filter(item => !item.is_deleted)
       } catch (error) {
         console.log(error)
       }
@@ -330,6 +312,7 @@ export default {
 .footer-bottom{
   padding:40px 40px;
   display:flex;
+  justify-content: center;
 }
 .footer-bottom-left{
   margin-top:10px;
