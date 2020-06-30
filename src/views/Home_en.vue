@@ -140,7 +140,7 @@ export default {
       if (data.name === 'Home') {
         this.$router.push({ name: 'home_en' })
       } else {
-        this.$router.push({ name: 'detail_en', query: { id: data.article_id, title: data.english_name } })
+        this.$router.push({ name: 'detail_en', query: { articleId: data.article_id, title: data.english_name } })
       }
       this.isShowNav = false
     },

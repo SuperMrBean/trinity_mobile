@@ -69,6 +69,7 @@ export default {
       bannerList: [],
       isShowNav: false,
       baseUrl: process.env.VUE_APP_BUILD_URL,
+      poster: '',
       video: {
         isShow: false,
         src: ''
@@ -80,7 +81,7 @@ export default {
   },
   watch: {
     $route () {
-      this.id = this.$route.query.id
+      this.id = this.$route.query.articleId
       this.title = this.$route.query.title
       this.getArticle()
       this.getBanner()
@@ -126,13 +127,13 @@ export default {
       if (data.english_name === 'Home') {
         this.$router.push({ name: 'home_en' })
       } else {
-        this.$router.push({ name: 'detail_en', query: { id: data.article_id, title: data.english_name } })
+        this.$router.push({ name: 'detail_en', query: { articleId: data.article_id, title: data.english_name } })
       }
       this.isShowNav = false
     }
   },
   mounted () {
-    this.id = this.$route.query.id
+    this.id = this.$route.query.articleId
     this.title = this.$route.query.title
     this.getTitle()
     this.getArticle()

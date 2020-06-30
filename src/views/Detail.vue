@@ -81,7 +81,7 @@ export default {
   },
   watch: {
     $route () {
-      this.id = this.$route.query.id
+      this.id = this.$route.query.articleId
       this.title = this.$route.query.title
       this.getArticle()
       this.getBanner()
@@ -127,13 +127,13 @@ export default {
       if (data.name === '首页') {
         this.$router.push({ name: 'home' })
       } else {
-        this.$router.push({ name: 'detail', query: { id: data.article_id, title: data.name } })
+        this.$router.push({ name: 'detail', query: { articleId: data.article_id, title: data.name } })
       }
       this.isShowNav = false
     }
   },
   mounted () {
-    this.id = this.$route.query.id
+    this.id = this.$route.query.articleId
     this.title = this.$route.query.title
     this.getTitle()
     this.getArticle()

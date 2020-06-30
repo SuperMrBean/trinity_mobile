@@ -140,7 +140,7 @@ export default {
       if (data.name === '首页') {
         this.$router.push({ name: 'home' })
       } else {
-        this.$router.push({ name: 'detail', query: { id: data.article_id, title: data.name } })
+        this.$router.push({ name: 'detail', query: { articleId: data.article_id, title: data.name } })
       }
       this.isShowNav = false
     },
